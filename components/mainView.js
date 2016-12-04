@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, StatusBar } from 'react-native';
 
 class mainView extends React.Component {
   constructor(props) {
@@ -11,6 +11,10 @@ class mainView extends React.Component {
   render() {
     return (
     	<View>
+        <StatusBar
+          backgroundColor="#ffffff"
+          barStyle="light-content"
+        />
         <Text>mainView</Text>
         
       </View>

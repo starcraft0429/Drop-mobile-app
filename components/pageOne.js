@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, Dimensions, StatusBar} from 'react-native';
 import commonStyle from './style.js';
 
 class PageOne extends React.Component {
@@ -7,6 +7,10 @@ class PageOne extends React.Component {
   render() {
     return (
       <View style={commonStyle.pages}>
+        <StatusBar
+          backgroundColor="#2196f3"
+          barStyle="light-content"
+        />
         <View style={styles.welcomeView}>
           <Text style={[styles.welcomeText, commonStyle.text]}>Welcome to</Text>
         </View>

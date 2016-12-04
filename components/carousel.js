@@ -40,7 +40,6 @@ class CarouselPage extends React.Component {
         inactiveIndicatorColor="#ffffff"
         indicatorAtBottom={true}
         indicatorOffset={50}
-
       >
         <PageOne goSecondPage={this.goSecondPage.bind(this)}/>
         <PageTwo goThirdPage={this.goThirdPage.bind(this)}/>
