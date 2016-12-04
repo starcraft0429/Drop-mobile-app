@@ -13,7 +13,7 @@ class mainView extends React.Component {
     	<View>
         <StatusBar
           backgroundColor="#ffffff"
-          barStyle="light-content"
+          barStyle="dark-content"
         />
         <Text>mainView</Text>
         
