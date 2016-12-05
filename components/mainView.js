@@ -5,9 +5,13 @@ import {
           View, 
           Button,
           Image,
-          StatusBar, 
+          Modal,
+          StatusBar,
+          TextInput,
           Dimensions,
-          TouchableHighlight
+          TouchableHighlight,
+          Platform,
+          PickerIOS 
         } from 'react-native';
 import Menu, {
                 MenuContext,
@@ -15,12 +19,68 @@ import Menu, {
                 MenuOption,
                 MenuTrigger
               } from 'react-native-popup-menu';
+import PickerAndroid from 'react-native-picker-android';
+import commonStyle from './style.js';
+import testData from'./data.js'
+
+let Picker = Platform.OS === 'ios' ? PickerIOS : PickerAndroid;
+let PickerItem = Picker.Item;
+
 class mainViewCompo extends React.Component {
   constructor(props) {
-    super(props)
-    
-  }
+    super(props);
+    this.menuClick = this.menuClick.bind(this);
+    this.showTimeModal = this.showTimeModal.bind(this);
+    this.showPersonModal = this.showPersonModal.bind(this);
+    this.showNewPersonModal = this.showNewPersonModal.bind(this);
+    this.showAddrModal = this.showAddrModal.bind(this);
+    this.showNewAddrModal = this.showNewAddrModal.bind(this);
+    this.showCartModal = this.showCartModal.bind(this);
+    this.showAddItemModal = this.showAddItemModal.bind(this);
+    this.showSubmitModal = this.showSubmitModal.bind(this);
+    this.state= {
+                  isTimeModal: false,
+                  isPersonModal: false,
+                  isNewPersonModal: false,
+                  isAddrModal: false,
+                  isNewAddrModal: false,
+                  isCartModal: false,
+                  isAddItemModal: false,
+                  isSubmitModal: false,
 
+                  brands: testData.test,
+                  brandIndex: 5
+                }
+  }
+  menuClick(value){
+    if(value == '3'){
+      this.showSubmitModal(true);
+    }
+  }
+  showTimeModal(visible){
+    this.setState({isTimeModal: visible});
+  }
+  showPersonModal(visible){
+    this.setState({isPersonModal: visible});
+  }
+  showNewPersonModal(visible){
+    this.setState({isNewPersonModal: visible});
+  }
+  showAddrModal(visible){
+    this.setState({isAddrModal: visible});
+  }
+  showNewAddrModal(visible){
+    this.setState({isNewAddrModal: visible});
+  }
+  showCartModal(visible){
+    this.setState({isCartModal: visible});
+  }
+  showAddItemModal(visible){
+    this.setState({isAddItemModal: visible});
+  }
+  showSubmitModal(visible){
+    this.setState({isSubmitModal: visible});
+  }
 
   render() {
     return (
@@ -36,16 +96,23 @@ class mainViewCompo extends React.Component {
               <Text style={styles.navbarText}>One swipe to order!</Text>
             </View>
             <View style={styles.menuView}>
-              <Menu onSelect={value => alert(`Selected number: ${value}`)}>
+              <Menu onSelect={(value) => this.menuClick(value)}>
                 <MenuTrigger>
-                  <Text style={styles.menuText}>● ● ●</Text>
+                  <Text style={styles.menuIconText}>● ● ●</Text>
                 </MenuTrigger>
                 <MenuOptions>
-                  <MenuOption value={1} text='One' />
-                  <MenuOption value={2}>
-                    <Text style={{color: 'red'}}>Two</Text>
+                  <MenuOption value={1} style={styles.menuRow}>
+                    <Image source={require('../images/setting.png')} style={styles.menuImg}/>
+                    <Text style={styles.menuText}>App settings</Text>
                   </MenuOption>
-                  <MenuOption value={3} disabled={true} text='Three' />
+                  <MenuOption value={2} style={styles.menuRow}>
+                    <Image source={require('../images/history.png')} style={styles.menuImg}/>
+                    <Text style={styles.menuText}>Order history</Text>
+                  </MenuOption>
+                  <MenuOption value={3} style={styles.menuRow}>
+                    <Image source={require('../images/help.png')} style={styles.menuImg}/>
+                    <Text style={styles.menuText}>Help</Text>
+                  </MenuOption>
                 </MenuOptions>
               </Menu>
             </View>
@@ -59,33 +126,336 @@ class mainViewCompo extends React.Component {
               </Image>
             </View>
             <View style={styles.btnView}>
-              <View style={styles.btnRow}>
-                <Image style={styles.btnImg}
-                  source={require('../images/main_time_icon.png')}
-                />
-                <Text style={styles.btnText}>7:00pm - 9:00pm Today</Text>
-              </View>
-              <View style={styles.btnRow}>
-                <Image style={styles.btnImg}
-                  source={require('../images/main_delivery_icon.png')}
-                />
-                <Text style={styles.btnText}>Duong Vung</Text>
-              </View>
-              <View style={styles.btnRow}>
-                <Image style={styles.btnImg}
-                  source={require('../images/main_location_icon.png')}
-                />
-                <Text style={styles.btnText}>Home</Text>
-              </View>
-              <View style={styles.btnRow}>
-                <Image style={styles.btnImg}
-                  source={require('../images/main_shoppingcart_icon.png')}
-                />
-                <Text style={styles.btnText}>150,000d for 13 items</Text>
-              </View>
+              <TouchableHighlight onPress={()=>this.showTimeModal(true)}>
+                <View style={styles.btnRow}>
+                  <Image style={styles.btnImg}
+                    source={require('../images/main_time_icon.png')}
+                  />
+                  <Text style={styles.btnText}>7:00pm - 9:00pm Today</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={()=>this.showPersonModal(true)}>
+                <View style={styles.btnRow}>
+                  <Image style={styles.btnImg}
+                    source={require('../images/main_delivery_icon.png')}
+                  />
+                  <Text style={styles.btnText}>Duong Vung</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={()=>this.showAddrModal(true)}>
+                <View style={styles.btnRow}>
+                  <Image style={styles.btnImg}
+                    source={require('../images/main_location_icon.png')}
+                  />
+                  <Text style={styles.btnText}>Home</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight onPress={()=>this.showCartModal(true)}>
+                <View style={styles.btnRow}>
+                  <Image style={styles.btnImg}
+                    source={require('../images/main_shoppingcart_icon.png')}
+                  />
+                  <Text style={styles.btnText}>150,000d for 13 items</Text>
+                </View>
+              </TouchableHighlight>
             </View>
           </View>
         </MenuContext>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isTimeModal}
+          onRequestClose={() => this.showTimeModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>Delivery anytime after</Text>
+                <View style={{height: 200}}>
+                  <Picker
+                      selectedValue={this.state.brandIndex}
+                      
+                      onValueChange={(brandIndex) => this.setState({brandIndex})}>
+                      {this.state.brands.map((brand, brandIndex) => (
+                          <PickerItem
+                              key={brandIndex}
+                              value={brandIndex}
+                              label={brand}
+                          />
+                      ))}
+                  </Picker>
+                </View>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showTimeModal(false)}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showTimeModal(false)}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isPersonModal}
+          onRequestClose={() => this.showPersonModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>Delivery Person</Text>
+                <View style={{alignItems: 'center'}}>
+                  <View style={styles.mdBtnRow}>
+                    <Image source={require('../images/info_button2.png')} style={styles.mdRowImg}/>
+                    <Text style={styles.mdProfileText}>Duong Vung</Text>
+                  </View>
+                  <Text style={styles.mdText}>can delivery your</Text>
+                  <Text style={styles.mdText}><Text style={{fontWeight: 'bold'}}>13 items</Text> to <Text style={{fontWeight: 'bold'}}>Home</Text></Text>
+                  <Text style={styles.mdText}>for <Text style={{fontWeight: 'bold'}}>150,000d</Text></Text>
+                  <Text style={styles.mdOrText}>Or</Text>
+                </View>
+                <TouchableHighlight onPress={()=> {this.showPersonModal(false); this.showNewPersonModal(true)}}>
+                  <View style={styles.mdBtnRow}>
+                    <Image source={require('../images/add_button2.png')} style={styles.mdRowImg}/>
+                    <Text style={styles.mdBtnText}>Add a new delivery person</Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showPersonModal(false)}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showPersonModal(false)}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isNewPersonModal}
+          onRequestClose={() => this.showNewPersonModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>New Delivery Person</Text>
+                <View style={{}}>
+                  <View style={styles.mdInput}>
+                    <TextInput
+                      placeholder="Name"
+                      placeholderTextColor="#2196f3"
+                      underlineColorAndroid='transparent'
+                      style={styles.mdTextInput}
+                    />
+                    <TextInput
+                      placeholder="Mobile"
+                      placeholderTextColor="#2196f3"
+                      underlineColorAndroid='transparent'
+                      style={styles.mdTextInput}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showNewPersonModal(false); this.showPersonModal(true)}}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showNewPersonModal(false); this.showPersonModal(true)}}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isAddrModal}
+          onRequestClose={() => this.showAddrModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>Your Delivery Addresses</Text>
+                <View style={{height: 200}}>
+                  <Picker
+                      selectedValue={this.state.brandIndex}
+                      
+                      onValueChange={(brandIndex) => this.setState({brandIndex})}>
+                      {this.state.brands.map((brand, brandIndex) => (
+                          <PickerItem
+                              key={brandIndex}
+                              value={brandIndex}
+                              label={brand}
+                          />
+                      ))}
+                  </Picker>
+                </View>
+                <TouchableHighlight onPress={()=> {this.showAddrModal(false); this.showNewAddrModal(true)}}>
+                  <View style={styles.mdBtnRow}>
+                    <Image source={require('../images/add_button2.png')} style={[styles.mdRowImg, styles.mdSingleBtn]}/>
+                  </View>
+                </TouchableHighlight>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showAddrModal(false)}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showAddrModal(false)}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isNewAddrModal}
+          onRequestClose={() => this.showNewAddrModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>New Address</Text>
+                <View style={{}}>
+                  <View style={styles.mdInput}>
+                    <TextInput
+                      placeholder="Address label"
+                      placeholderTextColor="#2196f3"
+                      underlineColorAndroid='transparent'
+                      style={styles.mdTextInput}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showNewAddrModal(false); this.showAddrModal(true)}}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showNewAddrModal(false); this.showAddrModal(true)}}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isCartModal}
+          onRequestClose={() => this.showCartModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>Your Delivery Addresses</Text>
+                <View style={{height: 200}}>
+                  <Picker
+                      selectedValue={this.state.brandIndex}
+                      
+                      onValueChange={(brandIndex) => this.setState({brandIndex})}>
+                      {this.state.brands.map((brand, brandIndex) => (
+                          <PickerItem
+                              key={brandIndex}
+                              value={brandIndex}
+                              label={brand}
+                          />
+                      ))}
+                  </Picker>
+                </View>
+                <TouchableHighlight onPress={()=> {this.showCartModal(false); this.showAddItemModal(true)}}>
+                  <View style={styles.mdBtnRow}>
+                    <Image source={require('../images/add_button2.png')} style={[styles.mdRowImg, styles.mdSingleBtn]}/>
+                  </View>
+                </TouchableHighlight>
+                <Text style={styles.cartInfoText}>Order total: 150,000d</Text>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showCartModal(false)}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showCartModal(false)}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isAddItemModal}
+          onRequestClose={() => this.showAddItemModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>Your Delivery Addresses</Text>
+                <View style={{height: 200}}>
+                  <Picker
+                      selectedValue={this.state.brandIndex}
+                      
+                      onValueChange={(brandIndex) => this.setState({brandIndex})}>
+                      {this.state.brands.map((brand, brandIndex) => (
+                          <PickerItem
+                              key={brandIndex}
+                              value={brandIndex}
+                              label={brand}
+                          />
+                      ))}
+                  </Picker>
+                </View>
+                <Text style={styles.cartInfoText}>Selection total: 40,000d</Text>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showAddItemModal(false); this.showCartModal(true)}}>
+                  <Text style={commonStyle.mdBtn}>Close</Text>
+                </TouchableHighlight>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showAddItemModal(false); this.showCartModal(true)}}>
+                  <Text style={commonStyle.mdBtn}>OK</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isSubmitModal}
+          onRequestClose={() => this.showSubmitModal(false)}
+          >
+          <View style={commonStyle.mdViewContainer}>
+            <View style={commonStyle.mdContainer}>
+              <View style={commonStyle.mdContent}>
+                <Text style={commonStyle.mdTitle}>Thank you for using Drop!</Text>
+                <View style={{alignItems: 'center'}}>
+                  
+                  <Text style={styles.mdText}>To improve our service</Text>
+                  <Text style={styles.mdText}>could you please rate the</Text>
+                  <Text style={styles.mdText}>quality of your last delivery?</Text>
+                  <Text style={styles.mdText}></Text>
+                  <Text style={styles.mdText}></Text>
+                  <Text style={styles.mdText}>The delivery was done by</Text>
+                  <Text style={styles.mdText}></Text>
+                  <Text style={styles.mdText}></Text>
+                </View>
+                <Text style={styles.mdProfileText}>Duong Vung</Text>
+              </View>
+              <View style={commonStyle.mdBtnContainer}>
+                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showSubmitModal(false)}>
+                  <Text style={commonStyle.mdBtn}>Submit rating</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
       
     );
@@ -121,8 +491,23 @@ var styles = StyleSheet.create({
     width: 50,
     justifyContent: 'center',
   },
-  menuText:{
+  menuIconText:{
     color: '#333',
+    fontSize: 15,
+  },
+  menuRow:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  menuImg:{
+    width: 35,
+    height: 35,
+    marginRight: 10,
+    resizeMode: 'stretch',
+  },
+  menuText:{
     fontSize: 15,
   },
   mainView:{
@@ -167,5 +552,50 @@ var styles = StyleSheet.create({
   btnText:{
     fontSize: 18,
     fontFamily: 'Lato-Regular',
+  },
+  mdBtnRow:{
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  mdRowImg:{
+    width: 40,
+    height: 40,
+    marginRight: 10,
+    resizeMode: 'stretch',
+  },
+  mdProfileText:{
+    fontSize: 25,
+    color: '#333333',
+  },
+  mdText:{
+    color: '#333333',
+    fontSize: 15,
+  },
+  mdOrText:{
+    margin: 30,
+    fontSize: 30,
+  },
+  mdBtnText:{
+    color: '#333333',
+    fontSize: 20,
+    fontFamily: 'Lato-Regular',
+  },
+  mdSingleBtn:{
+    marginRight: 0,
+    marginTop: 10,
+  },
+  mdTextInput:{
+    backgroundColor: '#ffffff',
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: '#bbb',
+    width: DeviceWidth*0.6,
+    height: 40,
+    margin: 10,
+  },
+  cartInfoText:{
+    fontSize: 18,
+    color: '#333333',
+    fontFamily: 'Lato-Medium',
   }
 });

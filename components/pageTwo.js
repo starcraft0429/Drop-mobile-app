@@ -27,9 +27,9 @@ class PageTwo extends React.Component {
     this.showProfileModal = this.showProfileModal.bind(this);
     this.state ={
                   isSecondPage: false,
-                  brandModal: false,
-                  deliveryModal: false,
-                  profileModal: false,
+                  isBrandModal: false,
+                  isDeliveryModal: false,
+                  isProfileModal: false,
 
                   brands: testData.test,
                   brandIndex: 5
@@ -39,13 +39,13 @@ class PageTwo extends React.Component {
     this.setState({isSecondPage: visible});
   }
   showBrandModal(visible) {
-    this.setState({brandModal: visible});
+    this.setState({isBrandModal: visible});
   }
   showDeliveryModal(visible) {
-    this.setState({deliveryModal: visible});
+    this.setState({isDeliveryModal: visible});
   }
   showProfileModal(visible) {
-    this.setState({profileModal: visible});
+    this.setState({isProfileModal: visible});
   }
 
 
@@ -148,7 +148,7 @@ class PageTwo extends React.Component {
           <Modal
             animationType={"fade"}
             transparent={true}
-            visible={this.state.brandModal}
+            visible={this.state.isBrandModal}
             onRequestClose={() => this.showBrandModal(false)}
             >
             <View style={commonStyle.mdViewContainer}>
@@ -184,7 +184,7 @@ class PageTwo extends React.Component {
           <Modal
             animationType={"fade"}
             transparent={true}
-            visible={this.state.deliveryModal}
+            visible={this.state.isDeliveryModal}
             onRequestClose={() => this.showDeliveryModal(false)}
             >
             <View style={commonStyle.mdViewContainer}>
@@ -220,7 +220,7 @@ class PageTwo extends React.Component {
           <Modal
             animationType={"fade"}
             transparent={true}
-            visible={this.state.profileModal}
+            visible={this.state.isProfileModal}
             onRequestClose={() => this.showProfileModal(false)}
             >
             <View style={commonStyle.mdViewContainer}>

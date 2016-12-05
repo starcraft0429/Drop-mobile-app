@@ -51,7 +51,7 @@ var commonStyle = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   mdContainer:{
-    backgroundColor: '#ffffff',
+    backgroundColor: '#ededed',
     width: DeviceWidth*0.8,
     borderRadius: 8,
     alignItems: 'center',
