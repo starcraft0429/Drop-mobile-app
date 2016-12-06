@@ -1,5 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Dimensions, TextInput, TouchableHighlight} from 'react-native';
+import { 
+        StyleSheet, 
+        Text, 
+        View, 
+        Button, 
+        Image, 
+        Dimensions, 
+        TextInput, 
+        TouchableHighlight
+      } from 'react-native';
 import commonStyle from './style.js';
 
 class PageThree extends React.Component {
