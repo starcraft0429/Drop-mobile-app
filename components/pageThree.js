@@ -1,14 +1,14 @@
 import React from 'react';
-import { 
-        StyleSheet, 
-        Text, 
-        View, 
-        Button, 
-        Image, 
-        Dimensions, 
-        TextInput, 
-        TouchableHighlight
-      } from 'react-native';
+import  { 
+          StyleSheet, 
+          Text, 
+          View, 
+          Button, 
+          Image, 
+          Dimensions, 
+          TextInput, 
+          TouchableHighlight
+        } from 'react-native';
 import commonStyle from './style.js';
 
 class PageThree extends React.Component {
@@ -71,6 +71,5 @@ var styles = StyleSheet.create({
     fontFamily: 'Lato-Regular',
     color: "#2196f3",
     marginBottom: DeviceHeight*0.015,
-    // backgroundImage: "url(../images/scooter.png)"
   },
 });
