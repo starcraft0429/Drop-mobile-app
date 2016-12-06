@@ -20,6 +20,7 @@ import Menu, {
                 MenuTrigger
               } from 'react-native-popup-menu';
 import PickerAndroid from 'react-native-picker-android';
+import Rating from 'react-native-easy-rating'
 import commonStyle from './style.js';
 import testData from'./data.js'
 
@@ -48,6 +49,7 @@ class mainViewCompo extends React.Component {
                   isAddItemModal: false,
                   isSubmitModal: false,
 
+                  starCount: 3,
                   brands: testData.test,
                   brandIndex: 5
                 }
@@ -81,7 +83,7 @@ class mainViewCompo extends React.Component {
   showSubmitModal(visible){
     this.setState({isSubmitModal: visible});
   }
-
+  
   render() {
     return (
     	<View style={{flex: 1}}>
@@ -447,6 +449,14 @@ class mainViewCompo extends React.Component {
                   <Text style={styles.mdText}></Text>
                 </View>
                 <Text style={styles.mdProfileText}>Duong Vung</Text>
+                <Rating
+                  rating={this.state.starCount}
+                  max={4}
+                  iconWidth={40}
+                  iconHeight={40}
+                  iconSelected={require('../images/icon_star_selected.png')}
+                  iconUnselected={require('../images/icon_star_unselected.png')}
+                  onRate={(rating) => this.setState({rating: rating})}/>
               </View>
               <View style={commonStyle.mdBtnContainer}>
                 <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showSubmitModal(false)}>
