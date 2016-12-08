@@ -9,7 +9,7 @@ import {
           StatusBar,
           TextInput,
           Dimensions,
-          TouchableHighlight,
+          TouchableOpacity,
           Platform,
           PickerIOS 
         } from 'react-native';
@@ -20,7 +20,8 @@ import Menu, {
                 MenuTrigger
               } from 'react-native-popup-menu';
 import PickerAndroid from 'react-native-picker-android';
-import Rating from 'react-native-easy-rating'
+import Rating from 'react-native-easy-rating';
+import MapView from './map.js';
 import commonStyle from './style.js';
 import testData from'./data.js'
 
@@ -31,6 +32,7 @@ class mainViewCompo extends React.Component {
   constructor(props) {
     super(props);
     this.menuClick = this.menuClick.bind(this);
+    this.showOverlayModal = this.showOverlayModal.bind(this);
     this.showTimeModal = this.showTimeModal.bind(this);
     this.showPersonModal = this.showPersonModal.bind(this);
     this.showNewPersonModal = this.showNewPersonModal.bind(this);
@@ -40,6 +42,7 @@ class mainViewCompo extends React.Component {
     this.showAddItemModal = this.showAddItemModal.bind(this);
     this.showSubmitModal = this.showSubmitModal.bind(this);
     this.state= {
+                  isOverlayModal: true,
                   isTimeModal: false,
                   isPersonModal: false,
                   isNewPersonModal: false,
@@ -58,6 +61,9 @@ class mainViewCompo extends React.Component {
     if(value == '3'){
       this.showSubmitModal(true);
     }
+  }
+  showOverlayModal(visible){
+    this.setState({isOverlayModal: visible});
   }
   showTimeModal(visible){
     this.setState({isTimeModal: visible});
@@ -128,41 +134,68 @@ class mainViewCompo extends React.Component {
               </Image>
             </View>
             <View style={styles.btnView}>
-              <TouchableHighlight onPress={()=>this.showTimeModal(true)}>
+              <TouchableOpacity onPress={()=>this.showTimeModal(true)}>
                 <View style={styles.btnRow}>
                   <Image style={styles.btnImg}
                     source={require('../images/main_time_icon.png')}
                   />
                   <Text style={styles.btnText}>7:00pm - 9:00pm Today</Text>
                 </View>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={()=>this.showPersonModal(true)}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.showPersonModal(true)}>
                 <View style={styles.btnRow}>
                   <Image style={styles.btnImg}
                     source={require('../images/main_delivery_icon.png')}
                   />
                   <Text style={styles.btnText}>Duong Vung</Text>
                 </View>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={()=>this.showAddrModal(true)}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.showAddrModal(true)}>
                 <View style={styles.btnRow}>
                   <Image style={styles.btnImg}
                     source={require('../images/main_location_icon.png')}
                   />
                   <Text style={styles.btnText}>Home</Text>
                 </View>
-              </TouchableHighlight>
-              <TouchableHighlight onPress={()=>this.showCartModal(true)}>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.showCartModal(true)}>
                 <View style={styles.btnRow}>
                   <Image style={styles.btnImg}
                     source={require('../images/main_shoppingcart_icon.png')}
                   />
                   <Text style={styles.btnText}>150,000d for 13 items</Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
         </MenuContext>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.isOverlayModal}
+          onRequestClose={() => this.showOverlayModal(false)}
+          >
+          <TouchableOpacity style={styles.overlayContainer} onPress={()=>this.showOverlayModal(false)}>
+            <View style={{flex: 0.1}}>
+            </View>
+            <View style={styles.overlayTextView}>
+              <Text style={styles.overlayText}>Pull the <Text style={{fontFamily: 'Lato-Black'}}>Drop</Text> switch down and</Text>
+              <Text style={styles.overlayText}>release to place your first order!</Text>
+            </View>
+            <View style={{flex: 0.1}}>
+            </View>
+            <View style={styles.overlayImgView}>
+              <Image style={styles.overlayImg}
+                source={require('../images/pull_down_finger_arrow.png')}
+              />
+            </View>
+            <View style={{flex: 0.15}}>
+            </View>
+            <View style={styles.overlayBtnView}>
+              <Text style={styles.overlayBtn}>Got it!</Text>
+            </View>
+          </TouchableOpacity>
+        </Modal>
         <Modal
           animationType={"fade"}
           transparent={true}
@@ -189,12 +222,12 @@ class mainViewCompo extends React.Component {
                 </View>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showTimeModal(false)}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showTimeModal(false)}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showTimeModal(false)}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showTimeModal(false)}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -219,20 +252,20 @@ class mainViewCompo extends React.Component {
                   <Text style={styles.mdText}>for <Text style={{fontWeight: 'bold'}}>150,000d</Text></Text>
                   <Text style={styles.mdOrText}>Or</Text>
                 </View>
-                <TouchableHighlight onPress={()=> {this.showPersonModal(false); this.showNewPersonModal(true)}}>
+                <TouchableOpacity onPress={()=> {this.showPersonModal(false); this.showNewPersonModal(true)}}>
                   <View style={styles.mdBtnRow}>
                     <Image source={require('../images/add_button2.png')} style={styles.mdRowImg}/>
                     <Text style={styles.mdBtnText}>Add a new delivery person</Text>
                   </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showPersonModal(false)}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showPersonModal(false)}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showPersonModal(false)}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showPersonModal(false)}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -265,12 +298,12 @@ class mainViewCompo extends React.Component {
                 </View>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showNewPersonModal(false); this.showPersonModal(true)}}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showNewPersonModal(false); this.showPersonModal(true)}}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showNewPersonModal(false); this.showPersonModal(true)}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => {this.showNewPersonModal(false); this.showPersonModal(true)}}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -299,19 +332,19 @@ class mainViewCompo extends React.Component {
                       ))}
                   </Picker>
                 </View>
-                <TouchableHighlight onPress={()=> {this.showAddrModal(false); this.showNewAddrModal(true)}}>
+                <TouchableOpacity onPress={()=> {this.showAddrModal(false); this.showNewAddrModal(true)}}>
                   <View style={styles.mdBtnRow}>
                     <Image source={require('../images/add_button2.png')} style={[styles.mdRowImg, styles.mdSingleBtn]}/>
                   </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showAddrModal(false)}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showAddrModal(false)}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showAddrModal(false)}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showAddrModal(false)}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -334,16 +367,26 @@ class mainViewCompo extends React.Component {
                       underlineColorAndroid='transparent'
                       style={styles.mdTextInput}
                     />
+                    <View style={{
+                                  borderRadius: 3,
+                                  borderWidth: 1,
+                                  borderColor: '#bbb',
+                                  width: DeviceWidth*0.6,
+                                  height: 40,
+                                  margin: 10,
+                                }}>
+                      <MapView/>
+                    </View>
                   </View>
                 </View>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showNewAddrModal(false); this.showAddrModal(true)}}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showNewAddrModal(false); this.showAddrModal(true)}}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showNewAddrModal(false); this.showAddrModal(true)}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => {this.showNewAddrModal(false); this.showAddrModal(true)}}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -372,20 +415,20 @@ class mainViewCompo extends React.Component {
                       ))}
                   </Picker>
                 </View>
-                <TouchableHighlight onPress={()=> {this.showCartModal(false); this.showAddItemModal(true)}}>
+                <TouchableOpacity onPress={()=> {this.showCartModal(false); this.showAddItemModal(true)}}>
                   <View style={styles.mdBtnRow}>
                     <Image source={require('../images/add_button2.png')} style={[styles.mdRowImg, styles.mdSingleBtn]}/>
                   </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
                 <Text style={styles.cartInfoText}>Order total: 150,000d</Text>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showCartModal(false)}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showCartModal(false)}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showCartModal(false)}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showCartModal(false)}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -417,12 +460,12 @@ class mainViewCompo extends React.Component {
                 <Text style={styles.cartInfoText}>Selection total: 40,000d</Text>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showAddItemModal(false); this.showCartModal(true)}}>
+                <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => {this.showAddItemModal(false); this.showCartModal(true)}}>
                   <Text style={commonStyle.mdBtn}>Close</Text>
-                </TouchableHighlight>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showAddItemModal(false); this.showCartModal(true)}}>
+                </TouchableOpacity>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => {this.showAddItemModal(false); this.showCartModal(true)}}>
                   <Text style={commonStyle.mdBtn}>OK</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -459,9 +502,9 @@ class mainViewCompo extends React.Component {
                   onRate={(rating) => this.setState({rating: rating})}/>
               </View>
               <View style={commonStyle.mdBtnContainer}>
-                <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showSubmitModal(false)}>
+                <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showSubmitModal(false)}>
                   <Text style={commonStyle.mdBtn}>Submit rating</Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -480,6 +523,42 @@ var DeviceWidth = Dimensions.get('window').width;
 var DeviceHeight = Dimensions.get('window').height;
 
 var styles = StyleSheet.create({
+  overlayContainer:{
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    alignItems: 'center',
+  },
+  overlayTextView:{
+    flex: .1,
+    alignItems: 'center',
+  },
+  overlayText:{
+    color: 'white',
+    fontSize: 25,
+    fontFamily: 'Lato-Medium',
+  },
+  overlayImgView:{
+    flex: .4,
+    alignItems: 'center',
+  },
+  overlayImg:{
+    flex: 1,
+    resizeMode: 'contain',
+  },
+  overlayBtnView:{
+    flex: .15,
+    alignItems: 'center',
+  },
+  overlayBtn:{
+    color: 'white',
+    fontSize: 25,
+    borderWidth: 3,
+    borderRadius: 5,
+    borderColor: 'white',
+    paddingTop: 3,
+    paddingLeft: 10,
+    paddingRight: 5,
+  },
   navbar:{
     flexDirection: 'row',
     height: 50,

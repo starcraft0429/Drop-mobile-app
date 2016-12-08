@@ -7,15 +7,16 @@ import  {
           Image, 
           Dimensions, 
           TextInput, 
-          TouchableHighlight
+          TouchableOpacity
         } from 'react-native';
 import commonStyle from './style.js';
+import MapView from './map.js';
 
 class PageThree extends React.Component {
 
   render() {
     return (
-      <View style={commonStyle.pages}>
+      <View style={[commonStyle.pages,{alignItems: 'center'}]}>
         <View style={commonStyle.imageView}>
           <Image style={commonStyle.image}
             source={require('../images/Address_icon.png')}
@@ -37,6 +38,9 @@ class PageThree extends React.Component {
             underlineColorAndroid='transparent'
             style={[styles.textInput]}
           />
+        </View>
+        <View style={styles.mapView}>
+          <MapView/>
         </View>
         <Text onPress={this.props.nextPage} 
               style={commonStyle.Button}
@@ -72,4 +76,8 @@ var styles = StyleSheet.create({
     color: "#2196f3",
     marginBottom: DeviceHeight*0.015,
   },
+  mapView: {
+    width: DeviceWidth*0.8,
+    alignItems: 'center',
+  }
 });

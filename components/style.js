@@ -6,8 +6,6 @@ var DeviceHeight = Dimensions.get('window').height;
 var commonStyle = StyleSheet.create({
 	pages: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#2196f3',
 	},
 	Button: {

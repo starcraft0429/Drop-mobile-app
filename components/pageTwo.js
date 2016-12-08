@@ -6,7 +6,7 @@ import {
           Image,
           Dimensions,
           TextInput,
-          TouchableHighlight,
+          TouchableOpacity,
           Modal,
           Platform,
           PickerIOS 
@@ -79,34 +79,34 @@ class PageTwo extends React.Component {
             />
           </View>
           <View style={styles.buttonView}>
-            <TouchableHighlight style={{alignItems: 'center'}}>
+            <TouchableOpacity style={{alignItems: 'center'}}>
               <View style={styles.buttonDiv}>
                 <Image style={commonStyle.btnImage}
                   source={require('../images/add_button.png')}
                 />
                 <Text style={[commonStyle.text, styles.btnText]}>Add as many as you need</Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
             <Text style={[commonStyle.text, styles.title]}>OR</Text>
-            <TouchableHighlight style={{alignItems: 'center'}} onPress={() =>this.toSecondPage(true)}>
+            <TouchableOpacity style={{alignItems: 'center'}} onPress={() =>this.toSecondPage(true)}>
               <View style={styles.buttonDiv}>
                 <Image style={commonStyle.btnImage}
                   source={require('../images/search.png')}
                 />
                 <Text style={[commonStyle.text, styles.btnText]}>Let us recomment someone</Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
         </View>
     }
     else{
       currentPage = 
         <View style={{alignItems: 'center'}}>
-          <TouchableHighlight style={styles.backBtnView} onPress={()=>this.toSecondPage(false)}>
+          <TouchableOpacity style={styles.backBtnView} onPress={()=>this.toSecondPage(false)}>
             <View >
               <Text style={[commonStyle.text, styles.backText]}>☚ Back</Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <View style={commonStyle.imageView}>
             <Image style={commonStyle.image}
               source={require('../images/scooter.png')}
@@ -115,36 +115,36 @@ class PageTwo extends React.Component {
           <View style={styles.littleTextView}>
             <Text style={[commonStyle.text, styles.littleText]}>We recommend</Text>
           </View>
-          <TouchableHighlight style={styles.nameDiv}>
+          <TouchableOpacity style={styles.nameDiv}>
             <View style={styles.buttonDiv}>
               <Image style={commonStyle.btnImage}
                 source={require('../images/info_button.png')}
               />
               <Text style={[commonStyle.text, styles.nameText]}>Duong Vung</Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <View style={styles.littleTextView}>
             <Text style={[commonStyle.text, styles.littleText]}>for delivering</Text>
           </View>
           <View style={styles.littleTextView}>
             <Text style={[commonStyle.text, styles.littleText]}>Aquatonic in Dong Da, Hanoi</Text>
           </View>
-          <TouchableHighlight style={styles.bigBtnDiv} onPress={() => this.showBrandModal(true)}>
+          <TouchableOpacity style={styles.bigBtnDiv} onPress={() => this.showBrandModal(true)}>
             <View style={styles.buttonDiv}>
               <Image style={commonStyle.btnImage}
                 source={require('../images/drink_button.png')}
               />
               <Text style={[commonStyle.text, styles.bigBtnText]}>Change product brand</Text>
             </View>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.bigBtnDiv} onPress={() => this.showDeliveryModal(true)}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.bigBtnDiv} onPress={() => this.showDeliveryModal(true)}>
             <View style={styles.buttonDiv}>
               <Image style={commonStyle.btnImage}
                 source={require('../images/change_delivery_button.png')}
               />
               <Text style={[commonStyle.text, styles.bigBtnText]}>Change delivery area</Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <Modal
             animationType={"fade"}
             transparent={true}
@@ -171,12 +171,12 @@ class PageTwo extends React.Component {
                   </View>
                 </View>
                 <View style={commonStyle.mdBtnContainer}>
-                  <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showBrandModal(false)}>
+                  <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showBrandModal(false)}>
                     <Text style={commonStyle.mdBtn}>Close</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showBrandModal(false)}>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showBrandModal(false)}>
                     <Text style={commonStyle.mdBtn}>OK</Text>
-                  </TouchableHighlight>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -207,12 +207,12 @@ class PageTwo extends React.Component {
                   </View>
                 </View>
                 <View style={commonStyle.mdBtnContainer}>
-                  <TouchableHighlight style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showDeliveryModal(false)}>
+                  <TouchableOpacity style={[commonStyle.doubleBtn, commonStyle.mdBtnVr]} onPress={() => this.showDeliveryModal(false)}>
                     <Text style={commonStyle.mdBtn}>Close</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => {this.showDeliveryModal(false);this.showProfileModal(true)}}>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => {this.showDeliveryModal(false);this.showProfileModal(true)}}>
                     <Text style={commonStyle.mdBtn}>OK</Text>
-                  </TouchableHighlight>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -261,9 +261,9 @@ class PageTwo extends React.Component {
                   </View>
                 </View>
                 <View style={commonStyle.mdBtnContainer}>
-                  <TouchableHighlight style={commonStyle.doubleBtn} onPress={() => this.showProfileModal(false)}>
+                  <TouchableOpacity style={commonStyle.doubleBtn} onPress={() => this.showProfileModal(false)}>
                     <Text style={commonStyle.mdBtn}>Close</Text>
-                  </TouchableHighlight>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
