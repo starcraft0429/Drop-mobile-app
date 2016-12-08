@@ -13,6 +13,7 @@ import {
           Platform,
           PickerIOS 
         } from 'react-native';
+import TouchableWithoutFeedback from 'TouchableWithoutFeedback';
 import Menu, {
                 MenuContext,
                 MenuOptions,
@@ -21,6 +22,7 @@ import Menu, {
               } from 'react-native-popup-menu';
 import PickerAndroid from 'react-native-picker-android';
 import Rating from 'react-native-easy-rating';
+import * as Animatable from 'react-native-animatable';
 import MapView from './map.js';
 import commonStyle from './style.js';
 import testData from'./data.js'
@@ -41,7 +43,9 @@ class mainViewCompo extends React.Component {
     this.showCartModal = this.showCartModal.bind(this);
     this.showAddItemModal = this.showAddItemModal.bind(this);
     this.showSubmitModal = this.showSubmitModal.bind(this);
+    this.btnAnimEnded = this.btnAnimEnded.bind(this);
     this.state= {
+                  isDropImg: 'drop',
                   isOverlayModal: true,
                   isTimeModal: false,
                   isPersonModal: false,
@@ -52,6 +56,8 @@ class mainViewCompo extends React.Component {
                   isAddItemModal: false,
                   isSubmitModal: false,
 
+                  countHandle: null,
+                  count: null,
                   starCount: 3,
                   brands: testData.test,
                   brandIndex: 5
@@ -60,6 +66,9 @@ class mainViewCompo extends React.Component {
   menuClick(value){
     if(value == '3'){
       this.showSubmitModal(true);
+    }
+    else if(value == '2'){
+      this.btnAnimEnded();
     }
   }
   showOverlayModal(visible){
@@ -89,8 +98,136 @@ class mainViewCompo extends React.Component {
   showSubmitModal(visible){
     this.setState({isSubmitModal: visible});
   }
-  
+  btnAnimEnded(){
+    this.setState({isDropImg: 'processing'});//image change
+    //timer start
+    this.setState({count: 10});
+    this.setState({ countHandle: setInterval(timer, 1000) });
+    var self = this;
+    function timer(){
+      self.setState({count: self.state.count-1});
+      if (self.state.count <= 0)
+      {
+         clearInterval(self.state.countHandle);
+         self.setState({ isDropImg: "delivering" });
+         return;
+      }
+    }
+  }
   render() {
+    let CountDownText = null;
+    const isDropImg = this.state.isDropImg;
+    let DropElement = null;
+    if(isDropImg == 'drop'){
+      CountDownText = <Text style={styles.navbarText}>One swipe to order!</Text>;
+      DropElement = 
+        <TouchableWithoutFeedback  onPress ={()=>this.setState({isDropImg: 'dropAnimation'})}>
+          <Image 
+            source={require('../images/main_slide_button_letters.png')}
+            style={styles.circleImg}>
+          </Image>
+        </TouchableWithoutFeedback>;
+    }
+    else if(isDropImg == 'dropAnimation'){
+      CountDownText = <Text style={styles.navbarText}>One swipe to order!</Text>;
+      DropElement = 
+        <Animatable.Image 
+          source={require('../images/main_slide_button_letters.png')}
+          style={styles.circleImg} duration={300} easing="ease-out"
+          animation="slideOutDown" iterationCount={2} direction="alternate"
+          onAnimationEnd = {()=>this.btnAnimEnded()}
+          >
+        </Animatable.Image>;
+    }
+    else if(isDropImg == 'processing'){
+      CountDownText = <Text style={styles.navbarText}>Swipe again within {this.state.count}s to cancel!</Text>;
+      DropElement = 
+        <TouchableWithoutFeedback  onPress ={()=>{clearInterval(this.state.countHandle); this.setState({isDropImg: 'drop'})}}>
+          <Image 
+            source={require('../images/main_processing_letters.png')}
+            style={styles.circleImg}>
+          </Image>
+        </TouchableWithoutFeedback>;
+    }
+    else if(isDropImg == 'delivering'){
+      CountDownText = <Text style={styles.navbarText}>Your order is on it's way!</Text>;
+      DropElement = 
+        <TouchableWithoutFeedback  onPress ={()=>this.setState({isDropImg: 'drop'})}>
+          <Image 
+            source={require('../images/main_delivering_letters.png')}
+            style={styles.circleImg}>
+          </Image>
+        </TouchableWithoutFeedback>;
+    }
+    ////four button disable
+    let profileContents = null;
+    if(isDropImg == 'drop'){
+      profileContents = 
+        <View style={styles.btnView}>
+          <TouchableOpacity onPress={()=>this.showTimeModal(true)}>
+            <View style={styles.btnRow}>
+              <Image style={styles.btnImg}
+                source={require('../images/main_time_icon.png')}
+              />
+              <Text style={styles.btnText}>7:00pm - 9:00pm Today</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.showPersonModal(true)}>
+            <View style={styles.btnRow}>
+              <Image style={styles.btnImg}
+                source={require('../images/main_delivery_icon.png')}
+              />
+              <Text style={styles.btnText}>Duong Vung</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.showAddrModal(true)}>
+            <View style={styles.btnRow}>
+              <Image style={styles.btnImg}
+                source={require('../images/main_location_icon.png')}
+              />
+              <Text style={styles.btnText}>Home</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.showCartModal(true)}>
+            <View style={styles.btnRow}>
+              <Image style={styles.btnImg}
+                source={require('../images/main_shoppingcart_icon.png')}
+              />
+              <Text style={styles.btnText}>150,000d for 13 items</Text>
+            </View>
+          </TouchableOpacity>
+        </View>;
+    }
+    else{
+      profileContents = 
+        <View style={styles.btnView}>
+          <View style={styles.btnRow}>
+            <Image style={styles.btnImg}
+              source={require('../images/main_time_icon_disabled.png')}
+            />
+            <Text style={styles.btnText}>7:00pm - 9:00pm Today</Text>
+          </View>
+          <View style={styles.btnRow}>
+            <Image style={styles.btnImg}
+              source={require('../images/main_delivery_icon_disabled.png')}
+            />
+            <Text style={styles.btnText}>Duong Vung</Text>
+          </View>
+          <View style={styles.btnRow}>
+            <Image style={styles.btnImg}
+              source={require('../images/main_location_icon_disabled.png')}
+            />
+            <Text style={styles.btnText}>Home</Text>
+          </View>
+          <View style={styles.btnRow}>
+            <Image style={styles.btnImg}
+              source={require('../images/main_shoppingcart_icon_disabled.png')}
+            />
+            <Text style={styles.btnText}>150,000d for 13 items</Text>
+          </View>
+        </View>;
+    }
+
     return (
     	<View style={{flex: 1}}>
         <StatusBar
@@ -101,7 +238,7 @@ class mainViewCompo extends React.Component {
           <View style={styles.navbar}>
             <View style={styles.menuView}></View>
             <View style={styles.navbarTextView}>
-              <Text style={styles.navbarText}>One swipe to order!</Text>
+              {CountDownText}
             </View>
             <View style={styles.menuView}>
               <Menu onSelect={(value) => this.menuClick(value)}>
@@ -128,45 +265,12 @@ class mainViewCompo extends React.Component {
           <View style={styles.mainView}>
             <View style={styles.dropView}>
               <Image source={require('../images/main_slider.png')} style={styles.bgImg}>
-                <Image source={require('../images/main_slide_button_letters.png')} style={styles.circleImg}>
-                
-                </Image>
+                {DropElement}
               </Image>
             </View>
-            <View style={styles.btnView}>
-              <TouchableOpacity onPress={()=>this.showTimeModal(true)}>
-                <View style={styles.btnRow}>
-                  <Image style={styles.btnImg}
-                    source={require('../images/main_time_icon.png')}
-                  />
-                  <Text style={styles.btnText}>7:00pm - 9:00pm Today</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.showPersonModal(true)}>
-                <View style={styles.btnRow}>
-                  <Image style={styles.btnImg}
-                    source={require('../images/main_delivery_icon.png')}
-                  />
-                  <Text style={styles.btnText}>Duong Vung</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.showAddrModal(true)}>
-                <View style={styles.btnRow}>
-                  <Image style={styles.btnImg}
-                    source={require('../images/main_location_icon.png')}
-                  />
-                  <Text style={styles.btnText}>Home</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.showCartModal(true)}>
-                <View style={styles.btnRow}>
-                  <Image style={styles.btnImg}
-                    source={require('../images/main_shoppingcart_icon.png')}
-                  />
-                  <Text style={styles.btnText}>150,000d for 13 items</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+            
+            {profileContents}
+            
           </View>
         </MenuContext>
         <Modal
